@@ -3,6 +3,12 @@ import Router from 'vue-router'
 import Login from '@/components/login/login' // @ 是 src 路径的别名，webpack 配置的
 import Home from '@/components/home/home' // @ 是 src 路径的别名，webpack 配置的
 
+// 用户管理组件
+import UserList from '@/components/user-list/user-list'
+
+// 角色管理组件
+import RoleList from '@/components/role-list/role-list'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -13,9 +19,28 @@ const router = new Router({
       component: Login
     },
     {
-      name: 'home',
+      name: 'home', // home 组件会渲染到 App.vue 根组件的 router-view 中
       path: '/',
-      component: Home
+      component: Home,
+      // 我们可以通过配置自路由的方式让某个组件渲染到父路由组件
+      // 1. 在父路由组件中添加 <router-view></router-view> 出口标记
+      // 2. 在父路由中通过 children 来声明自路由
+      //    children 是一个数组
+      //    children 数组中配置一个一个子路由对象
+      // 当你访问 user-list 组件的时候，则路由会先渲染它的父路由组件
+      // 然后将 user-list 组件渲染到父路由的 router-view 标记中
+      children: [
+        {
+          name: 'user-list',
+          path: '/users',
+          component: UserList
+        },
+        {
+          name: 'role-list',
+          path: '/roles',
+          component: RoleList
+        }
+      ]
     }
   ]
 })
