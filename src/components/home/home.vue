@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import {removeUserInfo} from '@/assets/js/auth'
+
 export default {
   data () {
     return {}
@@ -81,11 +83,15 @@ export default {
         type: 'warning'
       }).then(() => { // 点击确认执行 resolve 函数
         // 1. 删除本地存储中的 Token 身份标识
-        window.localStorage.removeItem('admin-token')
+        // window.localStorage.removeItem('admin-token')
+        removeUserInfo()
+
         // 2. 跳转到登陆视图
         this.$router.push({
           name: 'login'
         })
+
+        // 3. 提示用户退出成功
         this.$message({
           type: 'success',
           message: '退出成功!'

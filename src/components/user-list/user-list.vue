@@ -53,13 +53,20 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
+// import http from '@/assets/js/http'
+import {getToken} from '@/assets/js/auth'
+
 export default {
   async created () {
-    const {token} = JSON.parse(window.localStorage.getItem('admin-token'))
-    const res = await axios.get('http://localhost:8888/api/private/v1/users', {
+    // const {token} = JSON.parse(window.localStorage.getItem('admin-token'))
+    const token = getToken()
+    // 1. 请求地址写死了 ,不好改
+    // 2. 每次手动 axios 都手动 import 非常麻烦
+    // 3. 除了登录接口不需要授权用户令牌,其它都需要
+    const res = await this.$http.get('/users', {
       headers: {
-        Authorization: token // 配置请求头携带身份令牌
+        Authorization: token // 配置请求头携带身份令牌 Authorization 是服务器要求的字段名称  token 是通过用户名+密码从服务器得到的身份令牌
       },
       params: { // 请求参数, 对象会被转为 k=v&k=v 的格式, 然后拼接到请求路径 ? 后面发起请求
         pagenum: 1,
